@@ -1,0 +1,61 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Ensure the body takes up the full viewport height */
+    overflow: hidden; /* Hide scrollbars */
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #f0f0f0; /* Background color for visibility */
+}
+
+.container {
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+svg {
+    width: 100%;
+    height: 100%; /* Make the SVG fill the container */
+    max-width: 1000px; /* You can increase this value if needed */
+    max-height: 100%; /* Ensure it doesn't overflow the container */
+    object-fit: contain; /* Maintain aspect ratio */
+}
+
+/* Default styling for districts */
+.st1 {
+    fill: #ccc; /* Default fill color */
+    stroke: #383131; /* Default border color */
+}
+
+/* Additional styles for multiple classes */
+.st1,
+.st2,
+.st3 {
+    stroke: #000; /* Consistent stroke color for multiple classes */
+    stroke-miterlimit: 10; /* Stroke miter limit */
+}
+
+/* Highlighted district styling */
+.highlight {
+    fill: yellow; /* Highlighted color */
+}
+
+/* General styling for all polygons */
+polygon {
+    stroke-width: 1.75px; /* Border width */
+    fill: #fff; /* Default fill color */
+    transition: 0.25s; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for all polygons */
+polygon:hover {
+    fill: rgb(255, 10, 10) !important; /* Red color on hover */
+}

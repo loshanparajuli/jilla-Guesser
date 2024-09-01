@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jilla Guesser</title>
+</head>
+<body>
+    <input type="text" id="district-input" placeholder="Type a district name..." />
+    
+    <!-- Change object to iframe -->
+    <iframe src="nepal-map.html" id="nepal-map" style="border:none; width:100%; max-width:600px;" onload="setupDistrictHighlighting()"></iframe>
+
+    <script>
+        const districts = ['achham', 'arghakhanchi', 'baglung', 'baitadi', 'bajhang', 'bajura', 'banke', 'bara', 'bardiya', 'bhaktapur', 'bhojpur', 'chitwan', 'dadeldhura', 'dailekh', 'dang', 'darchula', 'dhading', 'dhankuta', 'dhanusha', 'dolakha', 'dolpa', 'doti', 'gorkha', 'gulmi', 'humla', 'ilam', 'jajarkot', 'jhapa', 'jumla', 'kailali', 'kalikot', 'kanchanpur', 'kapilvastu', 'kaski', 'kathmandu', 'kavre', 'khotang', 'lalitpur', 'lamjung', 'mahottari', 'makwanpur', 'manang', 'morang', 'mugu', 'mustang', 'myagdi', 'nawalparasi east', 'nawalparasi west', 'nuwakot', 'okhaldhunga', 'palpa', 'panchthar', 'parbat', 'parsa', 'pyuthan', 'ramechhap', 'rasuwa', 'rautahat', 'rolpa', 'rukum east', 'rukum west', 'rupandehi', 'salyan', 'sankhuwasabha', 'saptari', 'sarlahi', 'sindhuli', 'sindhupalchowk', 'siraha', 'solukhumbu', 'sunsari', 'surkhet', 'syangja', 'tanahun', 'taplejung', 'terhathum', 'udayapur'];
+        const inputField = document.getElementById('district-input');
+
+        // Function to set up event listener for highlighting districts
+        function setupDistrictHighlighting() {
+            const iframe = document.getElementById('nepal-map');
+            const svgDocument = iframe.contentDocument || iframe.contentWindow.document; // Access the embedded SVG document
+
+            inputField.addEventListener('input', (e) => {
+                const userInput = e.target.value.toLowerCase().trim();
+
+                if (districts.includes(userInput)) {
+                    const districtElement = svgDocument.getElementById(userInput);
+                    if (districtElement) {
+                        districtElement.classList.add('highlight'); // Highlight the district
+                        e.target.value = ''; // Clear input for next guess
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
