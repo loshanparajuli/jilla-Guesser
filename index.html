@@ -4,33 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jilla Guesser</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="haha.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script> <!-- Lottie player script -->
 </head>
 <body>
-    <input type="text" id="district-input" placeholder="Type a district name..." />
-    
-    <!-- Change object to iframe -->
-    <iframe src="nepal-map.html" id="nepal-map" style="border:none; width:100%; max-width:600px;" onload="setupDistrictHighlighting()"></iframe>
+    <div class="container" id="main-container">
+        <!-- Nepal Map as iframe -->
+        <iframe src="nepal-map.html" id="nepal-map" class="map-iframe" onload="setupDistrictHighlighting()"></iframe>
+
+        <!-- Input for District Guessing -->
+        <input type="text" id="district-input" placeholder="Type a district name to start..." />
+
+        <!-- Timer Display -->
+        <div id="timer" class="timer-display">05:00</div>
+    </div>
 
     <script>
         const districts = ['achham', 'arghakhanchi', 'baglung', 'baitadi', 'bajhang', 'bajura', 'banke', 'bara', 'bardiya', 'bhaktapur', 'bhojpur', 'chitwan', 'dadeldhura', 'dailekh', 'dang', 'darchula', 'dhading', 'dhankuta', 'dhanusha', 'dolakha', 'dolpa', 'doti', 'gorkha', 'gulmi', 'humla', 'ilam', 'jajarkot', 'jhapa', 'jumla', 'kailali', 'kalikot', 'kanchanpur', 'kapilvastu', 'kaski', 'kathmandu', 'kavre', 'khotang', 'lalitpur', 'lamjung', 'mahottari', 'makwanpur', 'manang', 'morang', 'mugu', 'mustang', 'myagdi', 'nawalparasi east', 'nawalparasi west', 'nuwakot', 'okhaldhunga', 'palpa', 'panchthar', 'parbat', 'parsa', 'pyuthan', 'ramechhap', 'rasuwa', 'rautahat', 'rolpa', 'rukum east', 'rukum west', 'rupandehi', 'salyan', 'sankhuwasabha', 'saptari', 'sarlahi', 'sindhuli', 'sindhupalchowk', 'siraha', 'solukhumbu', 'sunsari', 'surkhet', 'syangja', 'tanahun', 'taplejung', 'terhathum', 'udayapur'];
         const inputField = document.getElementById('district-input');
+        const timerDisplay = document.getElementById('timer');
+        const mainContainer = document.getElementById('main-container');
+        let gameInterval, timeout, timeLeft = 5 * 60, highlightedDistricts = new Set(); // 5 minutes in seconds
 
-        // Function to set up event listener for highlighting districts
+        function startTimer() {
+            updateTimerDisplay();
+            inputField.placeholder = "Come on, something interesting."; // Update placeholder after timer starts
+            gameInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(gameInterval);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const seconds = (timeLeft % 60).toString().padStart(2, '0');
+            timerDisplay.textContent = `${minutes}:${seconds}`;
+        }
+
+        function endGame() {
+            inputField.disabled = true;
+            revealMissedDistricts();
+        }
+
         function setupDistrictHighlighting() {
             const iframe = document.getElementById('nepal-map');
             const svgDocument = iframe.contentDocument || iframe.contentWindow.document; // Access the embedded SVG document
 
             inputField.addEventListener('input', (e) => {
+                if (!gameInterval) startTimer(); // Start the timer on first input
+
                 const userInput = e.target.value.toLowerCase().trim();
+                if (userInput === '') return;
 
                 if (districts.includes(userInput)) {
                     const districtElement = svgDocument.getElementById(userInput);
-                    if (districtElement) {
+                    if (districtElement && !highlightedDistricts.has(userInput)) {
                         districtElement.classList.add('highlight'); // Highlight the district
+                        highlightedDistricts.add(userInput); // Mark as guessed
                         e.target.value = ''; // Clear input for next guess
+                        
+                        // Trigger Lottie animation if 'solukhumbu' is guessed correctly
+                        if (userInput === 'solukhumbu') playMountainAnimation(districtElement);
+                    }
+                } else {
+                    showAutocompleteSuggestion(userInput); // Show autocomplete suggestion
+                }
+            });
+        }
+
+        function showAutocompleteSuggestion(userInput) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                const suggestion = districts.find(district => district.startsWith(userInput));
+                if (suggestion) {
+                    inputField.placeholder = suggestion;
+                    setTimeout(() => inputField.placeholder = "Come on, something interesting.", 2000);
+                }
+            }, 4000);
+        }
+
+        function revealMissedDistricts() {
+            const iframe = document.getElementById('nepal-map');
+            const svgDocument = iframe.contentDocument || iframe.contentWindow.document;
+
+            districts.forEach(district => {
+                if (!highlightedDistricts.has(district)) {
+                    const districtElement = svgDocument.getElementById(district);
+                    if (districtElement) {
+                        districtElement.classList.add('missed'); // Highlight missed district
+                        districtElement.addEventListener('mouseenter', () => {
+                            districtElement.setAttribute('title', district); // Show name on hover
+                        });
                     }
                 }
             });
+        }
+
+        function playMountainAnimation(targetElement) {
+            // Create a Lottie player
+            const lottiePlayer = document.createElement('lottie-player');
+            lottiePlayer.setAttribute('src', 'https://assets8.lottiefiles.com/packages/lf20_x1nszzgp.json'); // Mountain animation URL
+            lottiePlayer.setAttribute('background', 'transparent');
+            lottiePlayer.setAttribute('speed', '1');
+            lottiePlayer.setAttribute('style', 'width: 100px; height: 100px;');
+            lottiePlayer.setAttribute('autoplay', '');
+
+            // Append Lottie player to the target SVG element
+            targetElement.appendChild(lottiePlayer);
         }
     </script>
 </body>

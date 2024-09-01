@@ -1,8 +1,10 @@
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%; /* Ensure the body takes up the full viewport height */
-    overflow: hidden; /* Hide scrollbars */
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.5s, color 0.5s; /* Smooth transitions */
 }
 
 body {
@@ -10,52 +12,64 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: #f0f0f0; /* Background color for visibility */
+    background-color: #f9f9f9; /* Bright, minimal background */
 }
 
 .container {
-    width: 100vw; /* Full viewport width */
-    height: 100vh; /* Full viewport height */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-svg {
     width: 100%;
-    height: 100%; /* Make the SVG fill the container */
-    max-width: 1000px; /* You can increase this value if needed */
-    max-height: 100%; /* Ensure it doesn't overflow the container */
-    object-fit: contain; /* Maintain aspect ratio */
+    max-width: 1200px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    background-color: #ffffff; /* White background for the container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-/* Default styling for districts */
-.st1 {
-    fill: #ccc; /* Default fill color */
-    stroke: #383131; /* Default border color */
+#district-input {
+    width: 80%;
+    max-width: 600px;
+    padding: 10px;
+    font-size: 1.2em;
+    margin-top: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Additional styles for multiple classes */
-.st1,
-.st2,
-.st3 {
-    stroke: #000; /* Consistent stroke color for multiple classes */
-    stroke-miterlimit: 10; /* Stroke miter limit */
+.timer-display {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 20px;
 }
 
-/* Highlighted district styling */
+.map-iframe {
+    width: 100%;
+    max-width: 800px;
+    height: 600px;
+    border: none;
+    background-color: #ffffff; /* White background */
+}
+
+/* Updated styles for districts in SVG */
+svg {
+    background-color: #ffffff; /* White background for the map */
+    border: 2px solid red; /* Red border around the map */
+}
+
+path {
+    fill: #ffffff; /* White color for districts */
+    stroke: red; /* Red borders for districts */
+    stroke-width: 0.5; /* Thin red border */
+}
+
 .highlight {
-    fill: yellow; /* Highlighted color */
+    fill: red !important; /* Red color for highlighting guessed districts */
 }
 
-/* General styling for all polygons */
-polygon {
-    stroke-width: 1.75px; /* Border width */
-    fill: #fff; /* Default fill color */
-    transition: 0.25s; /* Smooth transition for hover effect */
+.missed {
+    fill: #ffcccc; /* Light red for missed districts */
 }
 
-/* Hover effect for all polygons */
-polygon:hover {
-    fill: rgb(255, 10, 10) !important; /* Red color on hover */
+.missed:hover {
+    fill: #ff9999; /* Darker red on hover */
 }
