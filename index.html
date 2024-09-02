@@ -25,9 +25,14 @@
         const inputField = document.getElementById('district-input');
         const timerDisplay = document.getElementById('timer');
         const mainContainer = document.getElementById('main-container');
-        let gameInterval, timeout, timeLeft = 5 * 60, highlightedDistricts = new Set(); // 5 minutes in seconds
+        let gameInterval;
+        let timeLeft = 5 * 60; // 5 minutes in seconds
+        let timerStarted = false; // Track if timer has started
+        const highlightedDistricts = new Set();
 
         function startTimer() {
+            if (timerStarted) return; // Prevent multiple timers from starting
+            timerStarted = true; // Mark timer as started
             updateTimerDisplay();
             inputField.placeholder = "Come on, something interesting."; // Update placeholder after timer starts
             gameInterval = setInterval(() => {
@@ -56,7 +61,7 @@
             const svgDocument = iframe.contentDocument || iframe.contentWindow.document; // Access the embedded SVG document
 
             inputField.addEventListener('input', (e) => {
-                if (!gameInterval) startTimer(); // Start the timer on first input
+                if (!timerStarted) startTimer(); // Start the timer on first input
 
                 const userInput = e.target.value.toLowerCase().trim();
                 if (userInput === '') return;
