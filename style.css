@@ -4,7 +4,7 @@ html, body {
     height: 100%;
     overflow: hidden;
     font-family: Arial, sans-serif;
-    transition: background-color 0.5s, color 0.5s; /* Smooth transitions */
+    transition: background-color 0.5s, color 0.5s;
 }
 
 body {
@@ -12,7 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: #f9f9f9; /* Bright, minimal background */
+    background-color: #fff; /* Bright, minimal background */
 }
 
 .container {
@@ -47,19 +47,33 @@ body {
     max-width: 800px;
     height: 600px;
     border: none;
-    background-color: #ffffff; /* White background */
+    background-color: #f9f9f9; /* White background */
 }
 
 /* Updated styles for districts in SVG */
 svg {
-    background-color: #ffffff; /* White background for the map */
-    border: 2px solid red; /* Red border around the map */
+    background-color: #fff; /* White background for the map */
+}
+svg path {
+    stroke: rgb(27, 24, 24); /* Change border color to red */
+    stroke-width: 1.3px; /* Increase border width */
+    fill: #f1f1e2; /* Set default fill color to cream */
+    transition: fill 0.3s ease; /* Smooth transition for hover effect */
 }
 
-path {
-    fill: #ffffff; /* White color for districts */
-    stroke: red; /* Red borders for districts */
-    stroke-width: 0.5; /* Thin red border */
+.highlight {
+    fill: red !important; /* Correctly guessed districts in red */
+}
+
+.missed:hover {
+    fill: #b10c0c; /* Hover effect for missed districts */
+}
+
+path, polygon {
+    fill: #ffffff; /* Cream color for districts */
+    stroke: red; /* Red borders between districts */
+    stroke-width: 2; /* Increase the thickness of the red border */
+    cursor: pointer; /* Change cursor to pointer when hovering over a district */
 }
 
 .highlight {
@@ -72,4 +86,18 @@ path {
 
 .missed:hover {
     fill: #ff9999; /* Darker red on hover */
+}
+
+/* Reveal district name on hover */
+path.missed:hover::after,
+polygon.missed:hover::after {
+    content: attr(data-name); /* Display district name */
+    position: absolute;
+    background-color: white;
+    color: black;
+    padding: 2px 5px;
+    border: 1px solid #ddd;
+    font-size: 0.8em;
+    border-radius: 3px;
+    transform: translate(-50%, -120%);
 }
