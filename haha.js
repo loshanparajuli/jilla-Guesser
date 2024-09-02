@@ -1,13 +1,13 @@
-<script>
-    const districts = ['achham', 'arghakhanchi', 'baglung', 'baitadi', 'bajhang', 'bajura', 'banke', 'bara', 'bardiya', 'bhaktapur', 'bhojpur', 'chitwan', 'dadeldhura', 'dailekh', 'dang', 'darchula', 'dhading', 'dhankuta', 'dhanusha', 'dolakha', 'dolpa', 'doti', 'gorkha', 'gulmi', 'humla', 'ilam', 'jajarkot', 'jhapa', 'jumla', 'kailali', 'kalikot', 'kanchanpur', 'kapilvastu', 'kaski', 'kathmandu', 'kavre', 'khotang', 'lalitpur', 'lamjung', 'mahottari', 'makwanpur', 'manang', 'morang', 'mugu', 'mustang', 'myagdi', 'nawalparasi east', 'nawalparasi west', 'nuwakot', 'okhaldhunga', 'palpa', 'panchthar', 'parbat', 'parsa', 'pyuthan', 'ramechhap', 'rasuwa', 'rautahat', 'rolpa', 'rukum east', 'rukum west', 'rupandehi', 'salyan', 'sankhuwasabha', 'saptari', 'sarlahi', 'sindhuli', 'sindhupalchowk', 'siraha', 'solukhumbu', 'sunsari', 'surkhet', 'syangja', 'tanahun', 'taplejung', 'terhathum', 'udayapur'];
-    const inputField = document.getElementById('district-input');
-    const timerDisplay = document.querySelector('.timer-display'); // Display element for the timer
-    let timer;
-    let timeRemaining = 300; // Set default time to 5 minutes (300 seconds)
+document.addEventListener('DOMContentLoaded', function() {
+    var districts = ['achham', 'arghakhanchi', 'baglung', 'baitadi', 'bajhang', 'bajura', 'banke', 'bara', 'bardiya', 'bhaktapur', 'bhojpur', 'chitwan', 'dadeldhura', 'dailekh', 'dang', 'darchula', 'dhading', 'dhankuta', 'dhanusha', 'dolakha', 'dolpa', 'doti', 'gorkha', 'gulmi', 'humla', 'ilam', 'jajarkot', 'jhapa', 'jumla', 'kailali', 'kalikot', 'kanchanpur', 'kapilvastu', 'kaski', 'kathmandu', 'kavre', 'khotang', 'lalitpur', 'lamjung', 'mahottari', 'makwanpur', 'manang', 'morang', 'mugu', 'mustang', 'myagdi', 'nawalparasi east', 'nawalparasi west', 'nuwakot', 'okhaldhunga', 'palpa', 'panchthar', 'parbat', 'parsa', 'pyuthan', 'ramechhap', 'rasuwa', 'rautahat', 'rolpa', 'rukum east', 'rukum west', 'rupandehi', 'salyan', 'sankhuwasabha', 'saptari', 'sarlahi', 'sindhuli', 'sindhupalchowk', 'siraha', 'solukhumbu', 'sunsari', 'surkhet', 'syangja', 'tanahun', 'taplejung', 'terhathum', 'udayapur'];
+    var inputField = document.getElementById('district-input');
+    var timerDisplay = document.querySelector('.timer-display'); // Display element for the timer
+    var timer;
+    var timeRemaining = 300; // Set default time to 5 minutes (300 seconds)
 
     // Function to start the timer
     function startTimer() {
-        timer = setInterval(() => {
+        timer = setInterval(function() {
             timeRemaining--;
             updateTimerDisplay();
 
@@ -28,31 +28,32 @@
 
     // Function to update the timer display
     function updateTimerDisplay() {
-        const minutes = Math.floor(timeRemaining / 60);
-        const seconds = timeRemaining % 60;
-        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; // Display time in MM:SS format
+        var minutes = Math.floor(timeRemaining / 60);
+        var seconds = timeRemaining % 60;
+        timerDisplay.textContent = minutes + ":" + (seconds < 10 ? '0' : '') + seconds; // Display time in MM:SS format
     }
 
     // Function to reveal missed districts
     function revealMissedDistricts() {
-        const iframe = document.getElementById('nepal-map');
-        const svgDocument = iframe.contentDocument || iframe.contentWindow.document;
+        var iframe = document.getElementById('nepal-map');
+        var svgDocument = iframe.contentDocument || iframe.contentWindow.document;
 
-        districts.forEach(district => {
-            const districtElement = svgDocument.getElementById(district);
+        districts.forEach(function(district) {
+            var districtElement = svgDocument.getElementById(district);
             if (districtElement && !districtElement.classList.contains('highlight')) {
                 districtElement.classList.add('missed');
+                districtElement.setAttribute('data-name', district.charAt(0).toUpperCase() + district.slice(1)); // Set data-name attribute for hover effect
             }
         });
     }
 
     // Function to set up event listener for highlighting districts
     function setupDistrictHighlighting() {
-        const iframe = document.getElementById('nepal-map');
-        const svgDocument = iframe.contentDocument || iframe.contentWindow.document; // Access the embedded SVG document
+        var iframe = document.getElementById('nepal-map');
+        var svgDocument = iframe.contentDocument || iframe.contentWindow.document; // Access the embedded SVG document
 
-        inputField.addEventListener('input', (e) => {
-            const userInput = e.target.value.toLowerCase().trim();
+        inputField.addEventListener('input', function(e) {
+            var userInput = e.target.value.toLowerCase().trim();
 
             if (timeRemaining === 300) { // Start timer when user starts typing for the first time
                 startTimer();
@@ -60,7 +61,7 @@
             }
 
             if (districts.includes(userInput)) {
-                const districtElement = svgDocument.getElementById(userInput);
+                var districtElement = svgDocument.getElementById(userInput);
                 if (districtElement) {
                     districtElement.classList.add('highlight'); // Highlight the district
                     e.target.value = ''; // Clear input for next guess
@@ -69,5 +70,5 @@
         });
     }
 
-    window.onload = setupDistrictHighlighting; // Call the setup function on load
-</script>
+    setupDistrictHighlighting(); // Call the setup function on load
+});
