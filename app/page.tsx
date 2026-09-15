@@ -56,16 +56,9 @@ export default function Page() {
           Jilla<em>Guesser</em>
         </span>
         <h1>
-          best on a
+          built for
           <em>desktop.</em>
         </h1>
-        <p>
-          This is a typing race — {JAMMA} districts, one map, one clock. It wants a real
-          keyboard and a wide screen. Come back on a laptop.
-        </p>
-        <a href="https://github.com/loshanparajuli/jilla-Guesser" target="_blank" rel="noreferrer">
-          source code
-        </a>
       </div>
 
     <div className="khel">

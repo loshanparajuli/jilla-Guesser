@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 /**
- * Static export so the whole game ships to GitHub Pages as plain files.
- * BASE_PATH is set by CI when the site is served from a repo subpath.
+ * The game is entirely client-side, so it ships as a static export: `next build`
+ * writes plain files to ./out. NEXT_PUBLIC_BASE_PATH is set only when the site
+ * is served from a repo subpath, as GitHub Pages does; on Vercel it is unset.
  */
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 

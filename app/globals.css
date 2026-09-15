@@ -519,7 +519,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.1rem;
+  gap: 1.5rem;
   height: 100dvh;
   padding: 2rem 1.75rem;
   text-align: center;
@@ -537,27 +537,6 @@ button {
   display: block;
   font-style: italic;
   color: var(--dhusro-halka);
-}
-
-.sano-parda p {
-  margin: 0;
-  max-width: 23rem;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--dhusro);
-}
-
-.sano-parda a {
-  margin-top: 0.5rem;
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--dhusro-halka);
-  text-decoration: none;
-}
-.sano-parda a:hover {
-  color: var(--kalo);
 }
 
 @media (max-width: 1023px), (pointer: coarse) and (max-width: 1400px) {
