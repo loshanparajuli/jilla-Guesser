@@ -40,6 +40,34 @@ export default function Page() {
   }, [khel.sandesh, khel.sandeshHatau]);
 
   return (
+    <>
+      {/* Shown instead of the game on phones and tablets — see globals.css. */}
+      <div className="sano-parda">
+        <span className="chinha">
+          <svg viewBox="0 0 15 14" aria-hidden="true">
+            <path
+              d="M2 1 L12.4 6 L6.6 6 L13 12.4 L2 12.4 Z"
+              fill="currentColor"
+              stroke="currentColor"
+              strokeWidth="0.9"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Jilla<em>Guesser</em>
+        </span>
+        <h1>
+          best on a
+          <em>desktop.</em>
+        </h1>
+        <p>
+          This is a typing race — {JAMMA} districts, one map, one clock. It wants a real
+          keyboard and a wide screen. Come back on a laptop.
+        </p>
+        <a href="https://github.com/loshanparajuli/jilla-Guesser" target="_blank" rel="noreferrer">
+          source code
+        </a>
+      </div>
+
     <div className="khel">
       <header className="sirsak">
         <span className="chinha">
@@ -167,6 +195,7 @@ export default function Page() {
           source code
         </a>
       </footer>
-    </div>
+      </div>
+    </>
   );
 }

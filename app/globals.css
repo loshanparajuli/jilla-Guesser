@@ -509,52 +509,63 @@ button {
   margin-left: auto;
 }
 
-/* ── narrow screens: let it breathe and scroll ─────────────────────────── */
+/* ── too small to play ─────────────────────────────────────────────────────
+   The game is a typing race against a clock, so it wants a keyboard and room
+   for the map. Phones and tablets get a note instead. The width cap on the
+   coarse-pointer rule keeps a large touchscreen desktop playable. */
 
-@media (max-width: 860px) {
-  html,
-  body {
-    overflow: auto;
-  }
+.sano-parda {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  height: 100dvh;
+  padding: 2rem 1.75rem;
+  text-align: center;
+}
+
+.sano-parda h1 {
+  margin: 0;
+  font-family: var(--akshar-thulo);
+  font-size: clamp(2.25rem, 12vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.sano-parda h1 em {
+  display: block;
+  font-style: italic;
+  color: var(--dhusro-halka);
+}
+
+.sano-parda p {
+  margin: 0;
+  max-width: 23rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--dhusro);
+}
+
+.sano-parda a {
+  margin-top: 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dhusro-halka);
+  text-decoration: none;
+}
+.sano-parda a:hover {
+  color: var(--kalo);
+}
+
+@media (max-width: 1023px), (pointer: coarse) and (max-width: 1400px) {
   .khel {
-    height: auto;
-    min-height: 100dvh;
+    display: none;
   }
-  .sirsak {
-    flex-wrap: wrap;
-    gap: 0.75rem 1rem;
-  }
-  .napne {
-    margin-left: 0;
-  }
-  .napne + .napne {
-    margin-left: 1rem;
-  }
-  .maidan {
-    grid-template-columns: minmax(0, 1fr);
-    align-content: start;
-  }
-  /* auto rows would otherwise soak up the leftover height and stretch the map box */
-  .naksa-khand {
-    grid-template-rows: auto auto;
-    align-content: start;
-  }
-  .naksa-thau {
-    overflow-x: auto;
-  }
-  .naksa {
-    min-width: 32rem;
-    height: auto;
-  }
-  .pradesh-suchi {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  .jilla-suchi {
-    max-height: 16rem;
-  }
-  .tala {
-    flex-wrap: wrap;
+  .sano-parda {
+    display: flex;
   }
 }
 
