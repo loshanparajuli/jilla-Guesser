@@ -1,0 +1,566 @@
+/* Jilla Guesser — one fixed screen, no scrolling.
+   Class names are the game's own vocabulary:
+     khel game · naksa map · jilla district · pradesh province
+     ghadi clock · ank score · bakas box · sanket hint · patti bar
+     bhetiyo found · chhutyo missed · tala footer · sirsak header   */
+
+:root {
+  --kagaj: #ffffff; /* paper */
+  --kagaj-halka: #f7f8fc;
+  --kalo: #0d1521; /* ink */
+  --dhusro: #6b7688; /* grey */
+  --dhusro-halka: #97a0b0;
+  --rekha: #e4e8f0; /* hairline */
+  --rekha-gaadho: #c9d2e0;
+  --nilo: #34409b; /* accent */
+  --rato: #b03a31; /* misses */
+
+  --koshi: #2c6e68;
+  --madhesh: #a8712f;
+  --bagmati: #3a4ca8;
+  --gandaki: #6e52a3;
+  --lumbini: #b85c42;
+  --karnali: #2a7399;
+  --sudurpashchim: #55803a;
+
+  --akshar: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --akshar-thulo: var(--font-playfair), Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* the whole game fits on one screen */
+}
+
+body {
+  background: var(--kagaj);
+  color: var(--kalo);
+  font-family: var(--akshar);
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ── shell ─────────────────────────────────────────────────────────────── */
+
+.khel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100dvh;
+}
+
+/* ── sirsak (header) ───────────────────────────────────────────────────── */
+
+.sirsak {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--rekha);
+}
+
+.chinha {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.chinha svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: var(--nilo);
+}
+.chinha em {
+  font-style: normal;
+  color: var(--dhusro-halka);
+}
+
+.ghadi-chhanne {
+  display: flex;
+  border: 1px solid var(--rekha);
+}
+.ghadi-chhanne button {
+  min-width: 3.25rem;
+  padding: 0.35rem 0.5rem;
+  border: 0;
+  border-left: 1px solid var(--rekha);
+  background: var(--kagaj);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--dhusro);
+  transition: background 0.15s, color 0.15s;
+}
+.ghadi-chhanne button:first-child {
+  border-left: 0;
+}
+.ghadi-chhanne button:hover {
+  color: var(--kalo);
+}
+.ghadi-chhanne button[aria-pressed="true"] {
+  background: var(--kalo);
+  color: #fff;
+}
+
+.napne {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin-left: auto;
+}
+.napne + .napne {
+  margin-left: 1.75rem;
+}
+
+.ank {
+  font-family: var(--akshar-thulo);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.ank em {
+  font-style: normal;
+  color: var(--dhusro-halka);
+}
+.ank.sakincha {
+  color: var(--rato);
+}
+
+.thegana {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dhusro);
+}
+
+/* ── batan (buttons) ───────────────────────────────────────────────────── */
+
+.batan {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--rekha-gaadho);
+  background: var(--kagaj);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.batan:hover {
+  border-color: var(--kalo);
+}
+.batan.gaadho {
+  border-color: var(--kalo);
+  background: var(--kalo);
+  color: #fff;
+}
+.batan.gaadho:hover {
+  background: var(--nilo);
+  border-color: var(--nilo);
+}
+
+/* ── maidan (the playing field) ────────────────────────────────────────── */
+
+.maidan {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16rem;
+  gap: 1.25rem;
+  min-height: 0;
+  padding: 1.25rem;
+}
+
+.naksa-khand {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 1rem;
+  min-height: 0;
+}
+
+.naksa-thau {
+  position: relative;
+  min-height: 0;
+  border: 1px solid var(--rekha);
+  padding: 0.5rem;
+}
+
+.naksa {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── jilla (districts) ─────────────────────────────────────────────────── */
+
+.jilla {
+  fill: #eef1f6;
+  stroke: #cfd6e2;
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+.jilla.bhetiyo {
+  fill: color-mix(in oklab, var(--pradesh-rang) 34%, white);
+  stroke: var(--pradesh-rang);
+  stroke-width: 0.9;
+}
+.jilla.chhutyo {
+  fill: #fbeaea;
+  stroke: var(--rato);
+  stroke-width: 0.9;
+}
+.jilla.dhamilo {
+  opacity: 0.3;
+}
+.jilla.chamkeko {
+  fill: color-mix(in oklab, var(--pradesh-rang) 60%, white);
+}
+.jilla.chhutyo.chamkeko {
+  fill: color-mix(in oklab, var(--rato) 32%, white);
+}
+.jilla.abhai {
+  animation: chamak 0.65s ease-out;
+}
+@keyframes chamak {
+  0% {
+    stroke-width: 4;
+    fill-opacity: 0.35;
+  }
+  100% {
+    stroke-width: 0.9;
+    fill-opacity: 1;
+  }
+}
+
+.naam {
+  font-family: var(--akshar);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-anchor: middle;
+  pointer-events: none;
+  paint-order: stroke fill;
+  stroke: rgba(255, 255, 255, 0.92);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  fill: #7e2620;
+}
+.naam.thulo {
+  font-size: 13px;
+  stroke-width: 3.6px;
+}
+
+/* ── sandesh (the little toast over the map) ───────────────────────────── */
+
+.sandesh {
+  position: absolute;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  max-width: calc(100% - 2rem);
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--rekha);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 6px 22px rgba(13, 21, 33, 0.08);
+  font-size: 0.8rem;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+.sandesh b {
+  font-weight: 600;
+}
+.sandesh span {
+  color: var(--dhusro-halka);
+}
+.thoplo {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  flex: none;
+}
+
+/* ── bakas (the answer box) ────────────────────────────────────────────── */
+
+.bakas {
+  display: block;
+  width: 100%;
+  padding: 0.45rem 0.75rem 0.55rem;
+  /* a single rule reads better here than a box, and matches the hairlines
+     everywhere else in the layout */
+  border: 0;
+  border-bottom: 1px solid var(--rekha-gaadho);
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--akshar-thulo);
+  font-size: 1.25rem;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--kalo);
+  caret-color: var(--nilo);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.bakas:focus {
+  border-bottom-color: var(--kalo);
+}
+/* the placeholder matches the typed text exactly, so the caret is never
+   taller than the words beside it */
+.bakas::placeholder {
+  font: inherit;
+  color: var(--dhusro-halka);
+}
+/* while a hint is parked in the placeholder, it should look like an answer */
+.bakas[data-sanket="ho"]::placeholder {
+  color: #c1a45c;
+}
+
+.bakas-khand {
+  display: grid;
+  gap: 0.35rem;
+  width: 100%;
+  max-width: 24rem;
+  margin: 0 auto;
+}
+
+.tippani {
+  min-height: 1rem;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--dhusro-halka);
+}
+.tippani b {
+  color: #9a7c2e;
+  font-weight: 600;
+}
+
+/* ── nateeja (the end-of-run strip, sits where the box was) ────────────── */
+
+.nateeja {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--rekha);
+  background: var(--kagaj-halka);
+}
+.nateeja p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--dhusro);
+}
+.nateeja .ank {
+  font-size: 1.9rem;
+}
+.nateeja .batan {
+  margin-left: auto;
+}
+.naya-record {
+  color: var(--nilo);
+  font-weight: 600;
+}
+
+/* ── dayan (right rail) ────────────────────────────────────────────────── */
+
+.dayan {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  border: 1px solid var(--rekha);
+}
+
+.dayan h2 {
+  margin: 0;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--rekha);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dhusro);
+}
+
+.pradesh-khand {
+  border-bottom: 1px solid var(--rekha);
+}
+
+.pradesh-suchi {
+  margin: 0;
+  padding: 0.35rem 0;
+  list-style: none;
+}
+
+.pradesh {
+  padding: 0.28rem 0.9rem;
+}
+.pradesh-mathi {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+}
+.pradesh-mathi span:last-child {
+  font-family: var(--akshar-thulo);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8rem;
+  color: var(--dhusro);
+}
+.pradesh.pugyo .pradesh-mathi span:first-child::after {
+  content: " ✓";
+  color: var(--dhusro-halka);
+}
+
+.patti {
+  height: 3px;
+  margin-top: 0.22rem;
+  background: var(--kagaj-halka);
+}
+.patti i {
+  display: block;
+  height: 100%;
+  background: var(--pradesh-rang);
+  transition: width 0.4s ease;
+}
+
+/* the running list of what you have named, or what you missed */
+.suchi-khand {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+}
+
+.jilla-suchi {
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  overflow-y: auto;
+  list-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rekha-gaadho) transparent;
+}
+.jilla-suchi li + li {
+  border-top: 1px solid var(--rekha);
+}
+.jilla-suchi button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.3rem 0.9rem;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: 0.78rem;
+}
+.jilla-suchi button:hover {
+  background: var(--kagaj-halka);
+}
+.jilla-suchi button span:last-child {
+  margin-left: auto;
+  font-size: 0.68rem;
+  color: var(--dhusro-halka);
+}
+
+.khaali {
+  margin: 0;
+  padding: 0.9rem;
+  font-size: 0.78rem;
+  color: var(--dhusro-halka);
+}
+
+/* ── tala (footer) ─────────────────────────────────────────────────────── */
+
+.tala {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.25rem;
+  border-top: 1px solid var(--rekha);
+  font-size: 0.75rem;
+  color: var(--dhusro);
+}
+.tala a {
+  color: var(--dhusro);
+  text-decoration: none;
+}
+.tala a:hover {
+  color: var(--kalo);
+}
+.tala .baaki-thau {
+  margin-left: auto;
+}
+
+/* ── narrow screens: let it breathe and scroll ─────────────────────────── */
+
+@media (max-width: 860px) {
+  html,
+  body {
+    overflow: auto;
+  }
+  .khel {
+    height: auto;
+    min-height: 100dvh;
+  }
+  .sirsak {
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+  }
+  .napne {
+    margin-left: 0;
+  }
+  .napne + .napne {
+    margin-left: 1rem;
+  }
+  .maidan {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+  }
+  /* auto rows would otherwise soak up the leftover height and stretch the map box */
+  .naksa-khand {
+    grid-template-rows: auto auto;
+    align-content: start;
+  }
+  .naksa-thau {
+    overflow-x: auto;
+  }
+  .naksa {
+    min-width: 32rem;
+    height: auto;
+  }
+  .pradesh-suchi {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .jilla-suchi {
+    max-height: 16rem;
+  }
+  .tala {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "jilla-guesser",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Name all 77 districts of Nepal before the clock runs out.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "typecheck": "tsc --noEmit",
+    "generate:map": "node scripts/generate-map-data.mjs",
+    "test": "node --test tests/"
+  },
+  "dependencies": {
+    "next": "^16.3.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  },
+  "type": "module"
+}
